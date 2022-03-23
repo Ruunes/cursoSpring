@@ -9,8 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
@@ -26,7 +28,19 @@ public class Product implements Serializable {
 	private Double price;
 	private String imgUrl;
 	
-	@Transient
+	
+	
+	@ManyToMany
+	/* Fazendo uma Relação em que muitos produtos podem ter muitas category
+	   mas foi istaciando a categoria em Set para que o produto possa ter apenas
+	   uma categoria de cada*/
+	
+	//criando uma tabela de associação
+	@JoinTable(name = "tb_product_category",
+	//chave estrangeiro dessa classe
+	joinColumns = @JoinColumn(name="product_id"),
+	// chave estrangeiro da classe que eu estou fazendo a associação
+	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();	
 	
 	public Product() {

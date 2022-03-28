@@ -49,6 +49,7 @@ public class User implements Serializable {
 		this.fone = fone;
 		this.password = password;
 	}
+	
 
 	public Long getId() {
 		return id;

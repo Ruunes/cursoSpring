@@ -57,7 +57,6 @@ public class Order implements Serializable {
 	}
 
 	public Order(Long id, Instant moment, User client, OrderStatus orderStatus) {
-		super();
 		this.id = id;
 		this.moment = moment;
 		this.client = client;
@@ -87,6 +86,29 @@ public class Order implements Serializable {
 	public void setClient(User client) {
 		this.client = client;
 	}
+	
+	@JsonIgnore
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null) {
+		this.orderStatus = orderStatus.getCode();
+		}
+	}
+	
+	public Set<OrderItem> getItems(){
+		return items;
+		}
+	
+	public Double getTotal() {
+		double sum = 0.0;
+		for(OrderItem x: items) {
+			sum += x.getSubTotal();
+		}
+		return sum;
+	}
 
 	@Override
 	public int hashCode() {
@@ -105,19 +127,5 @@ public class Order implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-	@JsonIgnore
-	public OrderStatus getOrderStatus() {
-		return OrderStatus.valueOf(orderStatus);
-	}
-
-	public void setOrderStatus(OrderStatus orderStatus) {
-		if(orderStatus != null) {
-		this.orderStatus = orderStatus.getCode();
-		}
-	}
-	
-	public Set<OrderItem> getItems(){
-		return items;
-		}
 
 }
